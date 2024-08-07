@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Gerenciador_Contatos_Clientes_Back.Tests": {
+      "commandName": "Project"
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker"
+    }
+  }
+}

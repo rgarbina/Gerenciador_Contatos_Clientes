@@ -4,11 +4,21 @@ services:
 
   gerenciador_contatos_clientes_back:
     container_name: gerenciador_contatos_clientes_back
-    image: ${DOCKER_REGISTRY-}gerenciador_contatos_clientes_back
+    image: '${DOCKER_REGISTRY-}gerenciador_contatos_clientes_back'
     build:
       context: .
       dockerfile: Gerenciador_Contatos_Clientes_Back/Dockerfile
 
   postgres16:
-    image: "postgres:16"
+    image: 'postgres:16'
     container_name: postgres16
+
+  # test:
+  #   build:
+  #       context: .
+  #       dockerfile: Gerenciador_Contatos_Clientes_Back.Tests/Dockerfile
+  #   depends_on:
+  #   - gerenciador_contatos_clientes_back
+  #   environment:
+  #       ASPNETCORE_ENVIRONMENT: Development
+  #   command: ["dotnet", "test", "--no-build", "--logger:trx"]
