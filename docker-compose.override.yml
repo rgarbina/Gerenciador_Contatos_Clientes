@@ -1,0 +1,38 @@
+version: '3.4'
+
+networks:
+  dev:
+    driver: bridge
+
+services:
+  gerenciador_contatos_clientes_back:
+    depends_on:
+      - "postgres16"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_HTTP_PORTS=8080
+      - ASPNETCORE_HTTPS_PORTS=8081
+      - ConnectionStrings__DefaultConnection=User ID =postgres;Password=admin;Server=postgres16;Port=5432;Database=gerenciador-contatos; Integrated Security=true;Pooling=true;
+    ports:
+      - "5009:8080"
+      - "5010:8081"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
+    networks:
+      - dev
+
+  postgres16:
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=gerenciador-contatos
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${APPDATA}/PostgreSQL:/var/lib/postgresql/data
+    networks:
+      - dev
+
+volumes:
+    app_data:
