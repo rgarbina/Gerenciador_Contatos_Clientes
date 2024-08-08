@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Gerenciador_Contatos_Clientes_Back.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class ClientesController : ControllerBase
     {
         private readonly IClienteRepository _clienteRepository;

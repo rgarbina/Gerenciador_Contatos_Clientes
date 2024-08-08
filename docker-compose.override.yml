@@ -1,7 +1,7 @@
 version: '3.4'
 
 networks:
-  dev:
+  dev-network:
     driver: bridge
 
 services:
@@ -12,18 +12,17 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ASPNETCORE_HTTP_PORTS=8080
       - ASPNETCORE_HTTPS_PORTS=8081
-      - ConnectionStrings__DefaultConnection=User ID =postgres;Password=admin;Server=postgres16;Port=5432;Database=gerenciador-contatos; Integrated Security=true;Pooling=true;
+      - ConnectionStrings__DefaultConnection=User ID =postgres;Password=admin;Host=postgres16;Port=5432;Database=gerenciador-contatos; Integrated Security=true;Pooling=true;
     ports:
       - "5009:8080"
-      - "5010:8081"
+      - "7010:8081"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
     networks:
-      - dev
+      - dev-network
 
   blazorapp:
-
     depends_on:
         - gerenciador_contatos_clientes_back
     environment:
@@ -31,7 +30,9 @@ services:
         - ASPNETCORE_URLS=https://+:443;http://+:80
     ports:
         - "5000:80"
-        - "5001:443"
+        - "7001:443"
+    networks:
+          - dev-network
 
   postgres16:
     environment:
@@ -43,7 +44,7 @@ services:
     volumes:
       - ${APPDATA}/PostgreSQL:/var/lib/postgresql/data
     networks:
-      - dev
+      - dev-network
 
 volumes:
     app_data:

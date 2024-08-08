@@ -1,0 +1,33 @@
+﻿@page "/clientes"
+
+@using Gerenciador_Contatos_Clientes_Front.Data
+@inject ClienteService ClienteService
+
+<h3>Clientes</h3>
+
+@if (clientes == null)
+{
+    <p><em>Loading...</em></p>
+}
+else if (!clientes.Any())
+{
+    <p><em>No clients found.</em></p>
+}
+else
+{
+    <ul>
+        @foreach (var cliente in clientes)
+        {
+            <li>@cliente.Nome (@cliente.Cnpj)</li>
+        }
+    </ul>
+}
+
+@code {
+    private Cliente[] clientes;
+
+    protected override async Task OnInitializedAsync()
+    {
+        clientes = await ClienteService.GetClientesAsync();
+    }
+}
