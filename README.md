@@ -41,8 +41,8 @@ utilizando C# no backend, Blazor no frontend, e Docker para conteinerização.
 2. Back End: [https://localhost:7001/](https://localhost:7001/swagger/index.html) [http://localhost:5001/](http://localhost:5001/swagger/index.html)
 
 ## Apêndice
-1.Necessario analisar e remover implementações não utilizados.
-2.Realizar Test de cobertura.
-3.Corrigir integracao dos Testes, para Repository e context.
-4.Unificar utilizacao e regras das classes Model entre Front e Back.
-5.Analisar e melhorar trechos de codigo, que necessitam de comentario.
+1. Necessario analisar e remover implementações não utilizados.
+2. Realizar Test de cobertura.
+3. Corrigir integracao dos Testes, para Repository e context.
+4. Unificar utilizacao e regras das classes Model entre Front e Back.
+5. Analisar e melhorar trechos de codigo, que necessitam de comentario.
