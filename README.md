@@ -23,6 +23,8 @@ utilizando C# no backend, Blazor no frontend, e Docker para conteinerização.
 #### Visual Studio
 1. Executar via Debugger na propria ferramenta
 
+### Ou
+
 #### Manual via prompt (nao funcional -! Necessario resolver problema de certificado com o front !-)
 
 1. Na raiz do projeto, executar o comando:
