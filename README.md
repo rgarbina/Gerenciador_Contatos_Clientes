@@ -14,7 +14,7 @@ utilizando C# no backend, Blazor no frontend, e Docker para conteinerização.
 
 ### Pré-requisitos
 
-- [.NET 6 SDK](https://dotnet.microsoft.com/download)
+- [SDK .NET 6 & 8](https://dotnet.microsoft.com/download)
 - [Visual Studio](https://visualstudio.microsoft.com/)
 - [Docker](https://www.docker.com/products/docker-desktop/)
 
