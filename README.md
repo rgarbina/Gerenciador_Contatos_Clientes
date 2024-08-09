@@ -37,6 +37,6 @@ utilizando C# no backend, Blazor no frontend, e Docker para conteinerização.
 
 ### Acessar aplicação 
 
-1. Front End: [https://localhost:7000/](https://localhost:7000) [https://localhost:5000/](https://localhost:5000)
-2. Back End: [https://localhost:7001/](https://localhost:7001/swagger/index.html) [https://localhost:5001/](https://localhost:5001/swagger/index.html)
+1. Front End: [https://localhost:7000/](https://localhost:7000) [http://localhost:5000/](http://localhost:5000)
+2. Back End: [https://localhost:7001/](https://localhost:7001/swagger/index.html) [http://localhost:5001/](http://localhost:5001/swagger/index.html)
 
