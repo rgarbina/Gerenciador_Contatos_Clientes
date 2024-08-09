@@ -5,6 +5,7 @@ using Gerenciador_Contatos_Clientes_Back.Models;
 using Gerenciador_Contatos_Clientes_Back.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace Gerenciador_Contatos_Clientes_Back.Controllers
 {
@@ -25,7 +26,7 @@ namespace Gerenciador_Contatos_Clientes_Back.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Cliente>>> GetClientes()
         {
-            var listCliente = await _clienteRepository.GetAllAsNoTracking().ToListAsync();
+            var listCliente = await _clienteRepository.GetAllAsNoTracking().OrderBy(o=> o.Id).ToListAsync();
 
             return Ok(listCliente);
         }
@@ -34,7 +35,7 @@ namespace Gerenciador_Contatos_Clientes_Back.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Cliente>> GetCliente(int id)
         {
-            var oCliente = await _clienteRepository.GetByIdAsync(id);
+            var oCliente = await _clienteRepository.GetDetalheClienteAsync(id);
 
             if (oCliente == null)
             {
@@ -52,6 +53,7 @@ namespace Gerenciador_Contatos_Clientes_Back.Controllers
             {
                 return BadRequest(ModelState);
             }
+
             var CNPJExist = _clienteRepository.Where(e => e.Cnpj == cliente.Cnpj).Any();
             if (CNPJExist)
             {
@@ -114,8 +116,15 @@ namespace Gerenciador_Contatos_Clientes_Back.Controllers
                 return NotFound();
             }
 
-            _clienteRepository.Remove(oCliente);
-            await _clienteRepository.SaveChangesAsync();
+            _clienteRepository.RemoverCascata(oCliente);
+            try
+            {
+                await _clienteRepository.SaveChangesAsync();
+            }
+            catch (Exception e)
+            {
+
+            }
 
             return NoContent();
         }
@@ -125,11 +134,6 @@ namespace Gerenciador_Contatos_Clientes_Back.Controllers
         public async Task<ActionResult<List<Contato>>> GetContatosCliente(int id)
         {
             var listContatos = await _contatorepository.Where(w => w.ClienteId == id).AsNoTracking().ToListAsync();
-
-            if (!listContatos.Any())
-            {
-                return NotFound();
-            }
 
             return Ok(listContatos);
         }

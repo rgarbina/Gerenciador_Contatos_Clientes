@@ -1,0 +1,70 @@
+﻿@page "/cliente/{ClienteId:int}/contato/{Id:int}"
+
+@using Gerenciador_Contatos_Clientes_Front.Data
+@using Gerenciador_Contatos_Clientes_Front.Component
+@inject ContatoService ContatoService
+@inject ClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<PageTitle>@("Contato - " + ActionTitlePage)</PageTitle>
+<h3>@("Contato - " + ActionTitlePage)</h3>
+
+<EditForm class="row g-3" Model="contato" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="col-6">
+        <label class="form-label" for="input-contato-nome">Nome:</label>
+        <InputText @bind-Value="contato.Nome" id="input-contato-nome" class="form-control" maxlength="100" placeholder="digite seu nome" />
+    </div>
+    <div class="col-6">
+        <label class="form-label" for="input-contato-email">Email:</label>
+        <InputText type="email" @bind-Value="contato.Email" id="input-contato-email" class="form-control" placeholder="nome@examplo.com" maxlength="100" />
+    </div>
+    <div class="col-2">
+        <label class="form-label" for="input-contato-telefone">Telefone:</label>
+        <InputMask @bind-Value="contato.Telefone" InputId="input-contato-telefone" MaskPattern="(99) 99999-9999" InputClass="form-control" InputPlaceHolder="(99) 99999-9999" />
+    </div>
+    <div class="col-3">
+        <label class="form-label" for="input-contato-cargo">Cargo:</label>
+        <InputText @bind-Value="contato.Cargo" id="input-contato-cargo" class="form-control" maxlength="50" placeholder="digite seu cargo" />
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Salvar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    [Parameter]
+    public int ClienteId { get; set; }
+    private Contato contato = new Contato();
+    private string ActionTitlePage = "Editar";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            contato = await ContatoService.GetContatoByIdAsync(Id);
+        }
+        else
+        {
+            ActionTitlePage = "Adicionar";
+        }
+        contato.ClienteId = ClienteId;
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (contato.Id == 0)
+        {
+            await ClienteService.CreateContatoClienteAsync(contato);
+        }
+        else
+        {
+            await ContatoService.UpdateContatoAsync(contato);
+        }
+
+        NavigationManager.NavigateTo($"/cliente-detalhe/{contato.ClienteId}");
+    }
+}

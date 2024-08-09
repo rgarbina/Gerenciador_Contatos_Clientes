@@ -1,0 +1,85 @@
+﻿@page "/cliente/{Id:int}"
+
+@using Gerenciador_Contatos_Clientes_Front.Component
+@using Gerenciador_Contatos_Clientes_Front.Data
+@using System.Text.RegularExpressions
+@inject IJSRuntime JS
+
+@inject ClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<PageTitle>@("Cliente - " + ActionTitlePage)</PageTitle>
+<h3>@("Cliente - " + ActionTitlePage)</h3>
+
+<EditForm class="row g-3" Model="cliente" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="col-12">
+        <label class="form-label" for="input-cliente-nome">Nome:</label>
+        <InputText @bind-Value="cliente.Nome" id="input-cliente-nome" class="form-control w-50" maxlength="100" placeholder="digite seu nome" />
+    </div>
+    <div class="col-md-2">
+        <label class="form-label">CNPJ:</label>
+        <InputMask @bind-Value="cliente.Cnpj" InputClass="form-control" InputId="cnpj" MaskPattern="99.999.999/9999-99" InputPlaceHolder="99.999.999/9999-99" />
+        <ValidationMessage For="@(() => cliente.Cnpj)" />
+    </div>
+    <div class="col-2">
+        <label class="form-label">Data Fundação:</label>
+        <InputDate @bind-Value="cliente.DataFundacao" class="form-control date-max-today" placeholder="dd-mm-aaaa" />
+    </div>
+    <div class="col-12">
+        <div class="form-check">
+            <InputCheckbox @bind-Value="cliente.Ativo" class="form-check-input" id="check-cliente-ativo"/>
+            <label class="form-check-label" for="check-cliente-ativo">
+                Ativo
+            </label>
+        </div>
+    </div>
+    <div class="col-12">
+        <button class="btn btn-primary" type="submit">Salvar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Cliente cliente = new Cliente();
+    private string ActionTitlePage = "Editar";
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (Id != 0)
+        {
+            cliente = await ClienteService.GetClienteByIdAsync(Id);
+        }
+        else
+        {
+            ActionTitlePage = "Adicionar";
+        }
+    }
+
+    protected override Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            // Call JavaScript function to set max date
+            JS.InvokeVoidAsync("setMaxDateToToday");
+        }
+        return base.OnAfterRenderAsync(firstRender);
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        if (cliente.Id == 0)
+        {
+            await ClienteService.CreateClienteAsync(cliente);
+        }
+        else
+        {
+            await ClienteService.UpdateClienteAsync(Id, cliente);
+        }
+
+        NavigationManager.NavigateTo("/clientes");
+    }
+}

@@ -10,5 +10,8 @@ namespace Gerenciador_Contatos_Clientes_Back.Data
         /// </summary>
         /// <param name="obj"></param>
         void Desativar(Cliente obj);
+
+        Task<Cliente?> GetDetalheClienteAsync(int id);
+        void RemoverCascata(Cliente obj);
     }
 }

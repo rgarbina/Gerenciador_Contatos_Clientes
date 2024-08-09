@@ -10,12 +10,12 @@ services:
       - "postgres16"
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_HTTP_PORTS=8080
-      - ASPNETCORE_HTTPS_PORTS=8081
+      - ASPNETCORE_HTTP_PORTS=5001
+      - ASPNETCORE_HTTPS_PORTS=7001
       - ConnectionStrings__DefaultConnection=User ID =postgres;Password=admin;Host=postgres16;Port=5432;Database=gerenciador-contatos; Integrated Security=true;Pooling=true;
     ports:
-      - "5009:8080"
-      - "7010:8081"
+      - "5001:5001"
+      - "7001:7001"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/home/app/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/home/app/.aspnet/https:ro
@@ -27,10 +27,11 @@ services:
         - gerenciador_contatos_clientes_back
     environment:
         - ASPNETCORE_ENVIRONMENT=Development
-        - ASPNETCORE_URLS=https://+:443;http://+:80
+        - ASPNETCORE_URLS=https://+:7000;http://+:5000
+        - BACKEND_URL=https://gerenciador_contatos_clientes_back:7001
     ports:
-        - "5000:80"
-        - "7001:443"
+        - "5000:5000"
+        - "7000:7000"
     networks:
           - dev-network
 

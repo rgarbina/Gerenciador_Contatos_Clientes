@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Gerenciador_Contatos_Clientes_Back.Data.Entity;
 
@@ -17,5 +17,6 @@ public class Contato
 
     public string? Cargo { get; set; }
 
+    [JsonIgnore] // Prevents circular reference
     public virtual Cliente Cliente { get; set; } = null!;
 }

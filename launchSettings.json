@@ -3,12 +3,12 @@
     "Docker Compose": {
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
-      "composeLaunchAction": "LaunchBrowser",
-      "composeLaunchServiceName": "gerenciador_contatos_clientes_back",
-      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "composeLaunchAction": "None",
+      "composeLaunchServiceName": "blazorapp",
       "serviceActions": {
         "gerenciador_contatos_clientes_back": "StartDebugging",
-        "postgres16": "StartWithoutDebugging"
+        "postgres16": "StartWithoutDebugging",
+        "blazorapp": "StartDebugging"
       }
     }
   }

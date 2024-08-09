@@ -1,0 +1,67 @@
+﻿@page "/cliente-detalhe/{Id:int}"
+
+@using Gerenciador_Contatos_Clientes_Front.Data
+@using Gerenciador_Contatos_Clientes_Front.Pages.Contato
+
+@inject ClienteService ClienteService
+@inject NavigationManager NavigationManager
+
+<PageTitle>Cliente - Detalhes</PageTitle>
+
+<h2 class="mb-3">Informações: </h2>
+
+@if (cliente == null)
+{
+    <p><em>Não há clientes.</em></p>
+}
+else if (Carregando)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="headingOne">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
+                    <div class="d-flex flex-row justify-content-between me-5 w-100">
+                        <div class="d-flex flex-row gap-1">
+                            <p class="mb-0">Nome:</p>
+                            <b>@cliente.Nome</b>
+                        </div>
+                        <div class="d-flex flex-row gap-1">
+                            <p class="mb-0">CNPJ:</p>
+                            <b>@cliente.CNPJFormatado()</b>
+                        </div>
+                        <div class="d-flex flex-row gap-1">
+                            <p class="mb-0">Data Fundação:</p>
+                            <b>@(cliente.DataFundacao.GetValueOrDefault().ToString("dd-MM-yyyy"))</b>
+                        </div>
+                        <div class="d-flex flex-row gap-1">
+                            <p class="mb-0">Ativo:</p>
+                            <b>@(cliente.Ativo == true ? "Ativo" : "Inativo")</b>
+                        </div>
+                    </div>
+                </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <ListaContato ClienteId="@Id" />
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    public bool Carregando { get; set; } = true;
+    private Cliente cliente = new Cliente();
+
+    protected override async Task OnInitializedAsync()
+    {
+        cliente = await ClienteService.GetClienteByIdAsync(Id);
+        Carregando = false;
+    }
+}

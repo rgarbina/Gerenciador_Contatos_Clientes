@@ -1,0 +1,41 @@
+﻿@using Microsoft.JSInterop
+
+<InputText id="@InputId" @bind-Value="@Value" @oninput="OnInput" class="@InputClass" placeholder="@InputPlaceHolder" />
+
+@code {
+    [Parameter]
+    public string InputId { get; set; }
+
+    [Parameter]
+    public string MaskPattern { get; set; }
+
+    [Parameter]
+    public string Value { get; set; }
+
+    [Parameter]
+    public EventCallback<string> ValueChanged { get; set; }
+
+    [Parameter]
+    public string InputClass { get; set; }
+
+    [Parameter]
+    public string InputPlaceHolder { get; set; }
+
+    [Inject]
+    private IJSRuntime JS { get; set; }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("applyInputMask", InputId, MaskPattern);
+        }
+    }
+
+    private async Task OnInput(ChangeEventArgs e)
+    {
+        var newValue = e.Value.ToString();
+        Value = newValue;
+        await ValueChanged.InvokeAsync(newValue);
+    }
+}

@@ -1,0 +1,78 @@
+﻿@page "/clientes/{Id:int}/contato"
+
+@using Gerenciador_Contatos_Clientes_Front.Data
+@inject ContatoService ContatoService
+@inject ClienteService ClienteService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+<button class="btn btn-success mb-4" @onclick="() => AddEditarContato(new Contato{})">Adicionar Novo Contato</button>
+
+@if (contatos == null || !contatos.Any())
+{
+    <p><em>Não há contatos.</em></p>
+}
+else
+{
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th>Nome</th>
+                <th>Email</th>
+                <th>Telefone</th>
+                <th>Cargo</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody class="accordion">
+            @foreach (var contato in contatos.Select((value, index) => (value, index)))
+            {
+                <tr class="accordion-item">
+                    <th scope="row">@(contato.index + 1)</th>
+                    <td>@contato.value.Nome</td>
+                    <td>@contato.value.Email</td>
+                    <td>@contato.value.Telefone</td>
+                    <td>@contato.value.Cargo</td>
+                    <td class="text-center">
+                        <button class="btn btn-primary mx-1" @onclick="() => AddEditarContato(contato.value)">Editar Contato</button>
+                        <button class="btn btn-danger mx-1" @onclick="() => ConfirmDelete(contato.value.Id)">Remover Contato</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    [Parameter]
+    public int ClienteId { get; set; }
+    private Contato[]? contatos;
+
+    protected override async Task OnInitializedAsync()
+    {
+        var x = await ClienteService.GetContatosClienteByIdAsync(ClienteId);
+        contatos = x;
+    }
+
+    private async Task RemoveContato(int id)
+    {
+        await ContatoService.DeleteContatoAsync(id);
+        contatos = await ClienteService.GetContatosClienteByIdAsync(ClienteId);
+    }
+
+    private void AddEditarContato(Contato contato)
+    {
+        contato.ClienteId = ClienteId;
+        NavigationManager.NavigateTo($"/cliente/{contato.ClienteId}/contato/{contato.Id}");
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirmDelete", "Tem certeza que quer remover?");
+        if (confirmed)
+        {
+            await RemoveContato(id);
+        }
+    }
+}

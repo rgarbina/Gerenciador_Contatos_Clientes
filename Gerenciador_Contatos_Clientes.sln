@@ -9,7 +9,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gerenciador_Contatos_Clientes_Back.Tests", "Gerenciador_Contatos_Clientes_Back.Tests\Gerenciador_Contatos_Clientes_Back.Tests.csproj", "{2F19F737-5E3B-41B9-A6AA-416C85D71B26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gerenciador_Contatos_Clientes_Front", "Gerenciador_Contatos_Clientes_Front\Gerenciador_Contatos_Clientes_Front.csproj", "{0A615820-D31D-4949-8893-0D13FE6B8A36}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Gerenciador_Contatos_Clientes_Front", "Gerenciador_Contatos_Clientes_Front\Gerenciador_Contatos_Clientes_Front.csproj", "{0A615820-D31D-4949-8893-0D13FE6B8A36}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,8 +2,13 @@
 
 @using Gerenciador_Contatos_Clientes_Front.Data
 @inject ClienteService ClienteService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
 
-<h3>Clientes</h3>
+<PageTitle>Clientes</PageTitle>
+<h1>Clientes</h1>
+
+<button class="btn btn-success mb-4" @onclick="() => AddEditCliente(0)">Adicionar Novo Cliente</button>
 
 @if (clientes == null)
 {
@@ -11,16 +16,33 @@
 }
 else if (!clientes.Any())
 {
-    <p><em>No clients found.</em></p>
+    <p><em>Não há clientes.</em></p>
 }
 else
 {
-    <ul>
-        @foreach (var cliente in clientes)
-        {
-            <li>@cliente.Nome (@cliente.Cnpj)</li>
-        }
-    </ul>
+    <table class="table table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">#</th>
+                <th>Nome</th>
+                <th class="text-center">Ações</th>
+            </tr>
+        </thead>
+        <tbody class="accordion">
+            @foreach (var cliente in clientes.Select((value, index) => (value, index)))
+            {
+                <tr class="accordion-item">
+                    <th scope="row">@(cliente.index + 1)</th>
+                    <td>@cliente.value.Nome</td>
+                    <td class="text-center g-3">
+                        <button class="btn btn-dark mx-2" @onclick="() => DetalheCliente(cliente.value.Id)">Detalhes</button>
+                        <button class="btn btn-primary mx-2" @onclick="() => AddEditCliente(cliente.value.Id)">Editar Cliente</button>
+                        <button class="btn btn-danger mx-2" @onclick="() => ConfirmDelete(cliente.value.Id)">Remover Cliente</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 }
 
 @code {
@@ -29,5 +51,30 @@ else
     protected override async Task OnInitializedAsync()
     {
         clientes = await ClienteService.GetClientesAsync();
+    }
+
+    private void DetalheCliente(int id)
+    {
+        NavigationManager.NavigateTo($"/cliente-detalhe/{id}");
+    }
+
+    private async Task RemoveCliente(int id)
+    {
+        await ClienteService.DeleteClienteAsync(id);
+        clientes = await ClienteService.GetClientesAsync();
+    }
+
+    private async Task ConfirmDelete(int id)
+    {
+        var confirmed = await JSRuntime.InvokeAsync<bool>("confirmDelete", "Tem certeza que quer remover?");
+        if (confirmed)
+        {
+            await RemoveCliente(id);
+        }
+    }
+
+    private void AddEditCliente(int id)
+    {
+        NavigationManager.NavigateTo($"/cliente/{id}");
     }
 }

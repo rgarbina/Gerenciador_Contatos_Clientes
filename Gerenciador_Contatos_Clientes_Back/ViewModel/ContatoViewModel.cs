@@ -9,7 +9,7 @@ namespace Gerenciador_Contatos_Clientes_Back.ViewModel
         [StringLength(100, ErrorMessage = "o campo nome vai até 100 caracteres.")]
         public string Nome { get; set; } = null!;
 
-        [Required(ErrorMessage = "Campo Nome é requerido.")]
+        [Required(ErrorMessage = "Campo Email é requerido.")]
         [StringLength(100, ErrorMessage = "o campo email vai até 100 caracteres.")]
         [EmailAddress(ErrorMessage = "endereco de email formato invalido.")]
         public string Email { get; set; } = null!;

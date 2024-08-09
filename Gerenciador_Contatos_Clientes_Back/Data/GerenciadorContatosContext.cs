@@ -84,7 +84,7 @@ public partial class GerenciadorContatosContext : DbContext
 
             entity.HasOne(d => d.Cliente).WithMany(p => p.Contatos)
                 .HasForeignKey(d => d.ClienteId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("contatos_clientes_fk");
         });
 
