@@ -34,4 +34,9 @@ utilizando C# no backend, Blazor no frontend, e Docker para conteinerização.
 2. Na raiz do projeto, executar o comando:
     ```bash
     docker-compose up --build
-    
+
+### Acessar aplicação 
+
+1. Front End: [https://localhost:7000/](https://localhost:7000) [https://localhost:5000/](https://localhost:5000)
+2. Back End: [https://localhost:7001/](https://localhost:7001/swagger/index.html) [https://localhost:5001/](https://localhost:5001/swagger/index.html)
+
